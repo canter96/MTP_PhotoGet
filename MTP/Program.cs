@@ -24,36 +24,45 @@ public class Program
         }
         Console.WriteLine("Введите номер устроства");
         nomerDevices = Convert.ToInt32(Console.ReadLine());
-        nameDevice = nameDevices[nomerDevices - 1];
-        var device = devices.First(d => d.FriendlyName == $"{nameDevice}");
-
-
-
+        if (nomerDevices > devices.Count())
         {
-            device.Connect();
-            var photoDir = device.GetDirectoryInfo(@"\Память телефона\DCIM\Camera");
-            var folders = photoDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
+            Console.WriteLine("Номер устройства указан не верно");
+            Console.Read();
 
-            foreach (var folder in folders)
+        }
+        else
+        {
+            nameDevice = nameDevices[nomerDevices - 1];
+            var device = devices.First(d => d.FriendlyName == $"{nameDevice}");
+
+
+
             {
-                Directory.CreateDirectory(@"D:\BOOK\" + folder.Name);
-                var photoSubDir = device.GetDirectoryInfo(@"\Память телефона\DCIM\Camera\" + folder.Name);
-                var files = photoSubDir.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly);
-                foreach (var file in files)
+                device.Connect();
+                var photoDir = device.GetDirectoryInfo(@"\Память телефона\DCIM\Camera");
+                var folders = photoDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
+
+                foreach (var folder in folders)
                 {
-                    MemoryStream memoryStream = new System.IO.MemoryStream();
-                    device.DownloadFile(file.FullName, memoryStream);
-                    memoryStream.Position = 0;
-                    WriteSreamToDisk($@"D:\BOOK\{folder.Name}\{file.Name}", memoryStream);
-                    device.DeleteFile(file.FullName);
-                    device.DeleteDirectory(folder.FullName);
-                    string fileName = Path.GetFileNameWithoutExtension(file.Name);
-                    File.Move($@"D:\BOOK\{folder.Name}\{file.Name}", $@"D:\BOOK\{folder.Name}\{fileName}.mp3");                 
+                    Directory.CreateDirectory(@"D:\BOOK\" + folder.Name);
+                    var photoSubDir = device.GetDirectoryInfo(@"\Память телефона\DCIM\Camera\" + folder.Name);
+                    var files = photoSubDir.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly);
+                    foreach (var file in files)
+                    {
+                        MemoryStream memoryStream = new System.IO.MemoryStream();
+                        device.DownloadFile(file.FullName, memoryStream);
+                        memoryStream.Position = 0;
+                        WriteSreamToDisk($@"D:\BOOK\{folder.Name}\{file.Name}", memoryStream);
+                        device.DeleteFile(file.FullName);
+                        device.DeleteDirectory(folder.FullName);
+                        string fileName = Path.GetFileNameWithoutExtension(file.Name);
+                        File.Move($@"D:\BOOK\{folder.Name}\{file.Name}", $@"D:\BOOK\{folder.Name}\{fileName}.mp3");
+                    }
+
                 }
 
+                device.Disconnect();
             }
-            
-            device.Disconnect();
         }
 
     }

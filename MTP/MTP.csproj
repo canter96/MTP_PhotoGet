@@ -2,13 +2,20 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <StartupObject>Program</StartupObject>
+    <ApplicationIcon>blueray_disc_cd_dvd_icon_190807.ico</ApplicationIcon>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="ConsoleString.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="blueray_disc_cd_dvd_icon_190807.ico" />
   </ItemGroup>
 
   <ItemGroup>
