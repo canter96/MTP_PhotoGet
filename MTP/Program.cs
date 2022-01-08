@@ -24,13 +24,14 @@ public class Program
         }
         Console.WriteLine("Введите номер устроства");
         nomerDevices = Convert.ToInt32(Console.ReadLine());
-        if (nomerDevices > devices.Count())
+        if(nomerDevices == 0) { nomerDevices = 42; }
+        if (nomerDevices > devices.Count() || nomerDevices == 42)
         {
             Console.WriteLine("Номер устройства указан не верно");
             Console.Read();
 
-        }
-        else
+        } 
+        else 
         {
             nameDevice = nameDevices[nomerDevices - 1];
             var device = devices.First(d => d.FriendlyName == $"{nameDevice}");
@@ -57,10 +58,12 @@ public class Program
                         device.DeleteDirectory(folder.FullName);
                         string fileName = Path.GetFileNameWithoutExtension(file.Name);
                         File.Move($@"D:\BOOK\{folder.Name}\{file.Name}", $@"D:\BOOK\{folder.Name}\{fileName}.mp3");
+                        Console.WriteLine($"Файл {fileName}.mp3 перемещен");
                     }
 
                 }
-
+                Console.WriteLine("Все найденые файлы перемещены");
+                Console.Read();
                 device.Disconnect();
             }
         }
