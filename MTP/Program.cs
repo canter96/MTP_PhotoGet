@@ -57,7 +57,7 @@ public class Program
                 nomerMemory = 1;
             }
             memoryPhone = memoryPhones[nomerMemory - 1];
-
+            device.Disconnect();
             {
                 device.Connect();
                 var photoDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\");
