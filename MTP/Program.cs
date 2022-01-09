@@ -1,73 +1,27 @@
 ﻿using MediaDevices;
+using MTP;
 
 public class Program
 {
     static void Main(string[] args)
     {
         var devices = MediaDevice.GetDevices();
-        //using (var device = devices.First(d => d.FriendlyName == "ZTE Blade A522"))
-        //var device = devices.First();
+        
+        DeviceFunction devicesFunction = new DeviceFunction();
+        string nameDevice = devicesFunction.getNameDevices();          
+        var device = devices.First(d => d.FriendlyName == $"{nameDevice}");
+        string memoryPhone = devicesFunction.getNameMemory(nameDevice);
+            
+            
+        device.Connect();
+        var bookDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\");
+        var folders = bookDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
 
-
-        int nomerDevices = 1;
-        string nameDevice;
-        string[] nameDevices = new string[devices.Count()];
-        //var nameDevices = Array.Empty<string>();
-        Console.WriteLine("Подключены следующие устройства");
-        foreach (var device2 in devices)
-        {
-            //int i = 0;
-            nameDevices[nomerDevices - 1] = device2.FriendlyName;
-            Console.WriteLine($"Номер устройства - {nomerDevices}, Название - {device2.FriendlyName}");
-            nomerDevices++;
-            //i++;
-        }
-        Console.WriteLine("Введите номер устроства");
-        nomerDevices = Convert.ToInt32(Console.ReadLine());
-        if(nomerDevices == 0) { nomerDevices = 42; }
-        if (nomerDevices > devices.Count() || nomerDevices == 42)
-        {
-            Console.WriteLine("Номер устройства указан не верно");
-            Console.Read();
-
-        } 
-        else 
-        {
-            nameDevice = nameDevices[nomerDevices - 1];
-            var device = devices.First(d => d.FriendlyName == $"{nameDevice}");
-
-            int nomerMemory;
-            string memoryPhone;
-            string[] memoryPhones = new string[2];
-            int count = 0;
-            device.Connect();
-            var memorys = device.GetDirectoryInfo(@"\");
-            var memory = memorys.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
-            Console.WriteLine("Устройство имеет такую память");
-            foreach (var memoryP in memory)
+        foreach (var folder in folders)
             {
-                memoryPhones[count] = memoryP.Name;                
-                Console.WriteLine($"Память номер - {count+1}, Название - {memoryP.Name}");
-                count++;
-            }
-            Console.WriteLine("Введите номер памяти");
-            nomerMemory = Convert.ToInt32(Console.ReadLine());
-            if(nomerMemory == 0 || nomerMemory>memory.Count())
-            {
-                nomerMemory = 1;
-            }
-            memoryPhone = memoryPhones[nomerMemory - 1];
-            device.Disconnect();
-            {
-                device.Connect();
-                var photoDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\");
-                var folders = photoDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
-
-                foreach (var folder in folders)
-                {
                     Directory.CreateDirectory(@"D:\BOOK\" + folder.Name);
-                    var photoSubDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\" + folder.Name);
-                    var files = photoSubDir.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly);
+                    var bookSubDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\" + folder.Name);
+                    var files = bookSubDir.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly);
                     foreach (var file in files)
                     {
                         MemoryStream memoryStream = new System.IO.MemoryStream();
@@ -81,12 +35,10 @@ public class Program
                         Console.WriteLine($"Файл {fileName}.mp3 перемещен");
                     }
 
-                }
-                Console.WriteLine("Все найденые файлы перемещены");
-                Console.Read();
-                device.Disconnect();
             }
-        }
+        device.Disconnect();
+        Console.WriteLine("Все найденые файлы перемещены");
+        Console.Read();
 
     }
  
@@ -99,11 +51,6 @@ public class Program
             file.Write(bytes, 0, bytes.Length);
             memoryStream.Close();
         }
-    }
-
-    static void ConsoleCMD(string Stroka)
-    {
-        System.Diagnostics.Process.Start("CMD.exe", "/C" + Stroka);
     }
 
 }
