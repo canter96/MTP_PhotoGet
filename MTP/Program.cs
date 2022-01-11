@@ -16,7 +16,7 @@ public class Program
         device.Connect();
         var bookDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\");
         var folders = bookDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
-
+        int count = 1;
         foreach (var folder in folders)
         {
             Directory.CreateDirectory(@"D:\BOOK\" + folder.Name);
@@ -27,17 +27,20 @@ public class Program
                 MemoryStream memoryStream = new System.IO.MemoryStream();
                 device.DownloadFile(file.FullName, memoryStream);
                 memoryStream.Position = 0;
-                WriteSreamToDisk($@"D:\BOOK\{folder.Name}\{file.Name}", memoryStream);
+                //WriteSreamToDisk($@"D:\BOOK\{folder.Name}\{file.Name}", memoryStream);
+                WriteSreamToDisk($@"D:\BOOK\{file.Name}", memoryStream);
                 device.DeleteFile(file.FullName);
                 device.DeleteDirectory(folder.FullName);
-                string fileName = Path.GetFileNameWithoutExtension(file.Name);
-                File.Move($@"D:\BOOK\{folder.Name}\{file.Name}", $@"D:\BOOK\{folder.Name}\{fileName}.mp3");
-                Console.WriteLine($"Файл {fileName}.mp3 перемещен");
+                //string fileName = Path.GetFileNameWithoutExtension(file.Name);
+                string nomerFile = string.Format("{0:0000}", count);
+                File.Move($@"D:\BOOK\{file.Name}", $@"D:\BOOK\{nomerFile}.mp3");
+                Console.WriteLine($"Fayl {nomerFile}.mp3 peremeshchen");
+                count++;
             }
 
         }
         device.Disconnect();
-        Console.WriteLine("Все найденые файлы перемещены");
+        Console.WriteLine("Vse naydenyye fayly peremeshcheny");
         Console.Read();
 
     }
