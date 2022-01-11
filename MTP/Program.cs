@@ -19,7 +19,7 @@ public class Program
         int count = 1;
         foreach (var folder in folders)
         {
-            Directory.CreateDirectory(@"D:\BOOK\" + folder.Name);
+            Directory.CreateDirectory(@"D:\BOOK\");
             var bookSubDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\" + folder.Name);
             var files = bookSubDir.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly);
             foreach (var file in files)
