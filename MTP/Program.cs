@@ -16,7 +16,7 @@ public class Program
         device.Connect();
         var bookDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\");
         var files = bookDir.EnumerateFiles("*.exo", SearchOption.AllDirectories);
-        var folders = bookDir.EnumerateDirectories("*", SearchOption.AllDirectories);
+        var folders = bookDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
         int count = 1;
         foreach (var file in files)
         {

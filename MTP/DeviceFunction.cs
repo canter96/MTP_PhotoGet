@@ -25,6 +25,7 @@ namespace MTP
                 nomerDevices++;
                 //i++;
             }
+            nomerDevices = 1;
             nameDevice = nameDevices[nomerDevices - 1];
             Console.WriteLine($"Будет использовано устройство - {nameDevice}") ;
             return nameDevice;
