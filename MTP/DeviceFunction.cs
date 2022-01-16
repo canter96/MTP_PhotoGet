@@ -25,16 +25,8 @@ namespace MTP
                 nomerDevices++;
                 //i++;
             }
-            LABLE1:
-            Console.WriteLine("Введите номер устроства");
-            nomerDevices = Convert.ToInt32(Console.ReadLine());
-            if (nomerDevices == 0) { nomerDevices = 42; }
-            if (nomerDevices > devices.Count() || nomerDevices == 42)
-            {
-                Console.WriteLine("Номер устройства указан не верно");
-                goto LABLE1;
-            }
             nameDevice = nameDevices[nomerDevices - 1];
+            Console.WriteLine($"Будет использовано устройство - {nameDevice}") ;
             return nameDevice;
         }
         public string getNameMemory(string nameDevice)
@@ -54,16 +46,11 @@ namespace MTP
                 memoryPhones[count] = memoryP.Name;
                 Console.WriteLine($"Память номер - {count + 1}, Название - {memoryP.Name}");
                 count++;
-            }
-            
-            Console.WriteLine("Введите номер памяти");
-            nomerMemory = Convert.ToInt32(Console.ReadLine());
-            if (nomerMemory == 0 || nomerMemory > memory.Count())
-            {
-                nomerMemory = 1;
-            }
+            }           
+            nomerMemory = 1;
             memoryPhone = memoryPhones[nomerMemory - 1];
             device.Disconnect();
+            Console.WriteLine($"Будет использована память - {memoryPhone}");
             return memoryPhone;
         }
 
