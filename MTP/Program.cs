@@ -26,10 +26,10 @@ public class Program
             memoryStream.Position = 0;
             WriteSreamToDisk($@"D:\BOOK\{file.Name}", memoryStream);
             device.DeleteFile(file.FullName);
-            //string fileName = Path.GetFileNameWithoutExtension(file.Name);
-            string nomerFile = string.Format("{0:00000}", count);
-            File.Move($@"D:\BOOK\{file.Name}", $@"D:\BOOK\{nomerFile}.mp3");
-            Console.WriteLine($"Файл {nomerFile}.mp3 перемещен");
+            string fileName = Path.GetFileNameWithoutExtension(file.Name);
+            //string nomerFile = string.Format("{0:00000}", count);
+            File.Move($@"D:\BOOK\{file.Name}", $@"D:\BOOK\{fileName}.mp3");
+            Console.WriteLine($"Файл {fileName}.mp3 перемещен");
             count++;
         }
         foreach (var folder in folders)
