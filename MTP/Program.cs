@@ -31,10 +31,10 @@ public class Program
                 WriteSreamToDisk($@"D:\BOOK\{file.Name}", memoryStream);
                 device.DeleteFile(file.FullName);
                 device.DeleteDirectory(folder.FullName);
-                //string fileName = Path.GetFileNameWithoutExtension(file.Name);
-                string nomerFile = string.Format("{0:0000}", count);
-                File.Move($@"D:\BOOK\{file.Name}", $@"D:\BOOK\{nomerFile}.mp3");
-                Console.WriteLine($"Fayl {nomerFile}.mp3 peremeshchen");
+                string fileName = Path.GetFileNameWithoutExtension(file.Name);
+                //string nomerFile = string.Format("{0:0000}", count);
+                File.Move($@"D:\BOOK\{file.Name}", $@"D:\BOOK\{fileName}.mp3");
+                Console.WriteLine($"Fayl {fileName}.mp3 peremeshchen");
                 count++;
             }
 
