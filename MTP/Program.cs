@@ -19,7 +19,7 @@ public class Program
 
         foreach (var folder in folders)
         {
-            Directory.CreateDirectory(@"D:\BOOK\");
+            Directory.CreateDirectory(@"D:\BOOK\" + folder.Name);
             var bookSubDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\" + folder.Name);
             var files = bookSubDir.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly);
             foreach (var file in files)
@@ -27,11 +27,11 @@ public class Program
                 MemoryStream memoryStream = new System.IO.MemoryStream();
                 device.DownloadFile(file.FullName, memoryStream);
                 memoryStream.Position = 0;
-                WriteSreamToDisk($@"D:\BOOK\{file.Name}", memoryStream);
+                WriteSreamToDisk($@"D:\BOOK\{folder.Name}\{file.Name}", memoryStream);
                 device.DeleteFile(file.FullName);
                 device.DeleteDirectory(folder.FullName);
                 string fileName = Path.GetFileNameWithoutExtension(file.Name);
-                File.Move($@"D:\BOOK\{file.Name}", $@"D:\BOOK\{fileName}.mp3");
+                File.Move($@"D:\BOOK\{folder.Name}\{file.Name}", $@"D:\BOOK\{folder.Name}\{fileName}.mp3");
                 Console.WriteLine($"Файл {fileName}.mp3 перемещен");
             }
 
