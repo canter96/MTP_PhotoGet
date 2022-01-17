@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediaDevices;
+﻿using MediaDevices;
 
 namespace MTP
 {
@@ -19,13 +14,11 @@ namespace MTP
             Console.WriteLine("Подключены следующие устройства");
             foreach (var device2 in devices)
             {
-                //int i = 0;
                 nameDevices[nomerDevices - 1] = device2.FriendlyName;
                 Console.WriteLine($"Номер устройства - {nomerDevices}, Название - {device2.FriendlyName}");
                 nomerDevices++;
-                //i++;
             }
-            LABLE1:
+        LABLE1:
             Console.WriteLine("Введите номер устроства");
             nomerDevices = Convert.ToInt32(Console.ReadLine());
             if (nomerDevices == 0) { nomerDevices = 42; }
@@ -55,7 +48,7 @@ namespace MTP
                 Console.WriteLine($"Память номер - {count + 1}, Название - {memoryP.Name}");
                 count++;
             }
-            
+
             Console.WriteLine("Введите номер памяти");
             nomerMemory = Convert.ToInt32(Console.ReadLine());
             if (nomerMemory == 0 || nomerMemory > memory.Count())
