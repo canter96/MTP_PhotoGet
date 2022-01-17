@@ -19,9 +19,9 @@ public class Program
         var folders = bookDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
         int count = 1;
         Console.WriteLine($"Peremeshchen Fayl:");
+        Directory.CreateDirectory(@"D:\BOOK\");
         foreach (var file in files)
-        {
-            Directory.CreateDirectory(@"D:\BOOK\");
+        {            
             MemoryStream memoryStream = new System.IO.MemoryStream();
             device.DownloadFile(file.FullName, memoryStream);
             memoryStream.Position = 0;
