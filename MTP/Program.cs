@@ -15,29 +15,27 @@ public class Program
 
         device.Connect();
         var bookDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\");
+        var files = bookDir.EnumerateFiles("*.exo", SearchOption.AllDirectories);
         var folders = bookDir.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
         int count = 1;
-        foreach (var folder in folders)
+        Console.WriteLine($"Peremeshchen Fayl:");
+        foreach (var file in files)
         {
             Directory.CreateDirectory(@"D:\BOOK\");
-            var bookSubDir = device.GetDirectoryInfo($@"\{memoryPhone}\Android\data\org.audioknigi.app\files\downloads\" + folder.Name);
-            var files = bookSubDir.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly);
-            foreach (var file in files)
-            {
-                MemoryStream memoryStream = new System.IO.MemoryStream();
-                device.DownloadFile(file.FullName, memoryStream);
-                memoryStream.Position = 0;
-                //WriteSreamToDisk($@"D:\BOOK\{folder.Name}\{file.Name}", memoryStream);
-                WriteSreamToDisk($@"D:\BOOK\{file.Name}", memoryStream);
-                device.DeleteFile(file.FullName);
-                device.DeleteDirectory(folder.FullName);
-                string fileName = Path.GetFileNameWithoutExtension(file.Name);
-                //string nomerFile = string.Format("{0:0000}", count);
-                File.Move($@"D:\BOOK\{file.Name}", $@"D:\BOOK\{fileName}.mp3");
-                Console.WriteLine($"Fayl {fileName}.mp3 peremeshchen");
-                count++;
-            }
-
+            MemoryStream memoryStream = new System.IO.MemoryStream();
+            device.DownloadFile(file.FullName, memoryStream);
+            memoryStream.Position = 0;
+            WriteSreamToDisk($@"D:\BOOK\{file.Name}", memoryStream);
+            device.DeleteFile(file.FullName);
+            string fileName = Path.GetFileNameWithoutExtension(file.Name);
+            //string nomerFile = string.Format("{0:00000}", count);
+            File.Move($@"D:\BOOK\{file.Name}", $@"D:\BOOK\{fileName}.mp3");
+            Console.WriteLine($"{count}");
+            count++;
+        }
+        foreach (var folder in folders)
+        {
+            device.DeleteDirectory(folder.FullName);
         }
         device.Disconnect();
         Console.WriteLine("Vse naydenyye fayly peremeshcheny");
